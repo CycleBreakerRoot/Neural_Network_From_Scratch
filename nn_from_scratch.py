@@ -21,8 +21,7 @@ def spiral_data(points, classes):
 
 
 
-X , y = spiral_data(1000 , 3)
-
+X , y = spiral_data(100 , 3)
 
 class layer_dense:
     def __init__(self , n_inputs , n_neurans):
@@ -38,11 +37,30 @@ class Activation_ReLU:
         self.output =  np.maximum(0 , input)
     
 
+class Activation_Softmax:
+    def forward(self, inputs):
+        exp_values = np.exp(inputs - np.max(inputs , axis= 1 , keepdims= True))
+        parbabilities = exp_values  / np.sum(exp_values , axis= 1  , keepdims= True)
+        self.output = parbabilities
 
 
-layer1 = layer_dense(2 , 5)
-act = Activation_ReLU()
 
-layer1.forward(X)
-act.forward(layer1.output)
-print(act.output)
+
+
+
+
+dense1 = layer_dense(2 , 3)
+act1 = Activation_ReLU()
+
+dense2 = layer_dense(3 , 3)
+act2  = Activation_Softmax()
+
+dense1.forward(X)
+act1.forward(dense1.output)
+
+dense2.forward(act1.output)
+act2.forward(dense2.output)
+
+print(act2.output)
+
+
